@@ -1,6 +1,6 @@
-from pycocotools.coco import COCO
-import requests
 import io
+import requests
+from pycocotools.coco import COCO
 from PIL import Image
 
 # instantiate COCO specifying the annotations json path
@@ -18,9 +18,10 @@ anns = coco.loadAnns(annIds)
 
 for im in images:
     img_data = requests.get(im['coco_url']).content
-    curr_ann = [i for i in anns if i['image_id'] == im['id']]
     imageStream = io.BytesIO(img_data)
     imageFile = Image.open(imageStream)
+
+    curr_anns = [i for i in anns if i['image_id'] == im['id']]
     
     # with open('tmp.jpg', 'wb') as handler:
     #     handler.write(img_data)
