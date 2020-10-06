@@ -31,7 +31,7 @@ def soft_resize(img: np.array, size):
     f[0:img.shape[0],0:img.shape[1]] = img
     return f
 
-def change_ratio_soft(img: np.array, new_ratio, shift):
+def change_ratio_soft(img: np.array, new_ratio, shift = 0):
     if shift < 0 or shift > 1:
         raise Exception('Shift must be from 0 to 1')
 
@@ -55,5 +55,5 @@ def change_ratio_soft(img: np.array, new_ratio, shift):
     f = np.zeros((new_h, new_w, 3), np.uint8)
     f[shift_h:old_h+shift_h, shift_w:old_w+shift_w] = img
 
-    transforms = ((new_h/shift_h, new_h/old_h), (new_w/shift_w, new_w/old_w)) #bias and coefficient
+    transforms = ((shift_h/new_h, new_h/old_h), (shift_w/new_w, new_w/old_w)) #bias and coefficient
     return f, transforms
