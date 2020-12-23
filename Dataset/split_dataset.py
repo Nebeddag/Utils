@@ -3,36 +3,31 @@ import glob, os
 import errno
 import uuid
 
-init_dir = '/media/cundo/HardDisk_01/Datasets/cleaning_data/ForReport/train'
-export_dir = '/media/cundo/HardDisk_01/Datasets/cleaning_data/ForReport/test'
+init_dir = '/home/cundo/Work/Cleaning/TLT_Share/classifier_dataset/train'
 
-export_fraction = 0.2
-randomize_names = True
+export_cfgs = []
+export_cfgs.append(('/home/cundo/Work/Cleaning/TLT_Share/classifier_dataset/val', 0.15))
+export_cfgs.append(('/home/cundo/Work/Cleaning/TLT_Share/classifier_dataset/test', 0.15))
 
 for (dirpath, dirnames, filenames) in os.walk(init_dir):
-    newdir = dirpath.replace(init_dir,export_dir)
+    fnames_left = filenames.copy()
+    random.shuffle(fnames_left)
 
-    if not os.path.exists(newdir):
-        os.makedirs(newdir)
+    for export_dir, export_fraction in export_cfgs:
+        newdir = dirpath.replace(init_dir, export_dir)
+        if not os.path.exists(newdir):
+            os.makedirs(newdir)
 
-    if len(filenames) == 0:
-        continue
+        if len(filenames) == 0:
+            continue
 
-    if randomize_names:
-        filenames_randomized = []
-        for f in filenames:
-            nf = f"{uuid.uuid4().hex}.{f.split('.')[-1]}"
-            filenames_randomized.append(nf)
+        fs_cnt = int(len(filenames) * export_fraction)
+        moving_files = fnames_left[0:fs_cnt]
+        fnames_left = fnames_left[fs_cnt:]
+
+        for f in moving_files:
             f_old = os.path.join(dirpath, f)
-            f_new = f_old.replace(f, nf)
+            f_new = f_old.replace(init_dir, export_dir)
             os.rename(f_old, f_new)
-        filenames = filenames_randomized
-
-    fs_cnt = int(len(filenames) * export_fraction)
-    moving_files = random.sample(filenames, fs_cnt)
-    for f in moving_files:
-        f_old = os.path.join(dirpath, f)
-        f_new = f_old.replace(init_dir, export_dir)
-        os.rename(f_old, f_new)
     
-
+print('done')
