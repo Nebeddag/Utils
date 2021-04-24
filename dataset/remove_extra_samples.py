@@ -1,7 +1,7 @@
 import os
 
-dir_path = '/mnt/Data/Datasets/cleaning/0475-1_02/per_t'
-fraction = 5
+dir_path = '/mnt/Data/Datasets/cleaning/detected_mb_384_ch12/0'
+fraction = 2
 
 files = os.listdir(dir_path)
 
