@@ -1,26 +1,9 @@
+import cv2
+from video.frame_iterator import FramesIterator
 
-# %%
-from gradient import Gradient
-from matplotlib import pyplot as plt
-import numpy as np
+fn = 'D:\Films\Chungking Express (1994)\Chungking.Express.1994.BDRip.x264.AAC.Rus.Eng.Comm.Sub.tRuAVC.mkv'
+fr_iter = FramesIterator(fn, from_sec=60, span_sec=600)
 
-
-stgs = []
-stgs.append((100, (0,0,0)))
-stgs.append((80, (255,0,255)))
-stgs.append((0, (0,0,255)))
-stgs.append((60, (0,255,255)))
-stgs.append((20, (0,255,0)))
-stgs.append((40, (255,255,0)))
-
-gr = Gradient(stgs)
-im = np.zeros((100,100,3)).astype(int)
-
-for i in range(100):
-    rgb = gr.get_color(i)
-    im[:,i,0] = rgb[0]
-    im[:,i,1] = rgb[1]
-    im[:,i,2] = rgb[2]
-    
-plt.imshow(im)
-# %%
+for frame, frame_id, frame_time in fr_iter:
+    cv2.imshow(f'frame:{frame_id} time:{str(frame_time)}' , frame)
+    cv2.waitKey()
