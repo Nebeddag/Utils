@@ -36,7 +36,8 @@ class FramesIterator:
         while True:
             curr_frame = self.curr_frame
             if curr_frame <= self.end_frame:
-                self.cap.set(cv2.CAP_PROP_POS_FRAMES, int(curr_frame))
+                if self.span_sec:
+                    self.cap.set(cv2.CAP_PROP_POS_FRAMES, int(curr_frame))
                 try:
                     ret, frame = self.cap.read()
                     if ret != True:
