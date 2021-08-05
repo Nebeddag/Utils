@@ -1,7 +1,7 @@
 import os
 
-dir_path = '/mnt/Data/Datasets/cleaning/detected_mb_384_ch12/0'
-fraction = 2
+dir_path = '/mnt/Data/Datasets/cleaning/detected/0'
+fraction = 20
 
 files = os.listdir(dir_path)
 
